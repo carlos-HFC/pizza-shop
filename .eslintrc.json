@@ -1,0 +1,18 @@
+{
+  "extends": "@rocketseat/eslint-config/react",
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "arrowParens": "avoid",
+        "endOfLine": "auto",
+        "semi": false,
+        "singleAttributePerLine": true
+      }
+    ],
+    "no-unused-vars": "off",
+    "no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-vars": "off"
+  }
+}
