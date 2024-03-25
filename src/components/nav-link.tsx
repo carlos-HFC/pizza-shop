@@ -1,6 +1,6 @@
 import { NavLink as Nav, NavLinkProps } from "react-router-dom"
 
-export function NavLink(props: NavLinkProps) {
+export function NavLink(props: Readonly<NavLinkProps>) {
   return (
     <Nav
       {...props}
