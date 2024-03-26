@@ -4,7 +4,10 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 
-import { getManagedRestaurant } from "@/api/get-managed-restaurant"
+import {
+  getManagedRestaurant,
+  GetManagedRestaurantResponse,
+} from "@/api/get-managed-restaurant"
 import { updateProfile } from "@/api/update-profile"
 import { queryClient } from "@/lib/react-query"
 
@@ -23,7 +26,7 @@ import { Textarea } from "./ui/textarea"
 
 const storeProfileSchema = z.object({
   name: z.string().min(1),
-  description: z.string().min(1),
+  description: z.string().nullable(),
 })
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>
@@ -46,17 +49,35 @@ export function StoreProfileDialog() {
     },
   })
 
+  function updateManagedRestaurantCache(data: StoreProfileSchema) {
+    const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
+      "managed-restaurant",
+    ])
+
+    if (cached) {
+      queryClient.setQueryData<GetManagedRestaurantResponse>(
+        ["managed-restaurant"],
+        {
+          ...cached,
+          name: data.name,
+          description: data.description,
+        },
+      )
+    }
+
+    return { cached }
+  }
+
   const { mutateAsync: updateProfileFn } = useMutation({
     mutationFn: updateProfile,
-    onSuccess(_, { description, name }) {
-      const cached = queryClient.getQueryData(["managed-restaurant"])
+    onMutate({ description, name }) {
+      const { cached } = updateManagedRestaurantCache({ name, description })
 
-      if (cached) {
-        queryClient.setQueryData(["managed-restaurant"], {
-          ...cached,
-          name,
-          description,
-        })
+      return { previousProfile: cached }
+    },
+    onError(_, __, context) {
+      if (context?.previousProfile) {
+        updateManagedRestaurantCache(context.previousProfile)
       }
     },
   })
@@ -65,7 +86,7 @@ export function StoreProfileDialog() {
     try {
       await updateProfileFn({
         name: data.name,
-        description: data.description,
+        description: data?.description ?? "",
       })
 
       toast.success("Perfil atualizado com sucesso")
