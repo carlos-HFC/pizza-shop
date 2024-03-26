@@ -1,8 +1,10 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { BuildingIcon, ChevronDownIcon, LogOutIcon } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 import { getManagedRestaurant } from "@/api/get-managed-restaurant"
 import { getProfile } from "@/api/get-profile"
+import { singOut } from "@/api/sign-out"
 
 import { StoreProfileDialog } from "./store-profile-dialog"
 import { Button } from "./ui/button"
@@ -18,6 +20,8 @@ import {
 import { Skeleton } from "./ui/skeleton"
 
 export function AccountMenu() {
+  const navigate = useNavigate()
+
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryFn: getProfile,
     queryKey: ["profile"],
@@ -30,6 +34,13 @@ export function AccountMenu() {
       queryKey: ["managed-restaurant"],
       staleTime: Infinity,
     })
+
+  const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
+    mutationFn: singOut,
+    onSuccess() {
+      navigate("/sign-in", { replace: true })
+    },
+  })
 
   return (
     <Dialog>
@@ -76,9 +87,18 @@ export function AccountMenu() {
               </DropdownMenuItem>
             </DialogTrigger>
 
-            <DropdownMenuItem className="text-rose-500 dark:text-rose-400">
-              <LogOutIcon className="mr-2 size-4" />
-              <span>Sair</span>
+            <DropdownMenuItem
+              asChild
+              disabled={isSigningOut}
+              className="text-rose-500 dark:text-rose-400"
+            >
+              <button
+                onClick={() => signOutFn()}
+                className="w-full"
+              >
+                <LogOutIcon className="mr-2 size-4" />
+                <span>Sair</span>
+              </button>
             </DropdownMenuItem>
           </DropdownMenuLabel>
         </DropdownMenuContent>
