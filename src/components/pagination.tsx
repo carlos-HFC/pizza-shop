@@ -11,14 +11,16 @@ interface PaginationProps {
   pageIndex: number
   totalCount: number
   perPage: number
+  onPageChange(pageIndex: number): Promise<void> | void
 }
 
 export function Pagination({
   pageIndex,
   perPage,
   totalCount,
+  onPageChange,
 }: Readonly<PaginationProps>) {
-  const pages = Math.ceil(totalCount / perPage) || 1
+  const totalPages = Math.ceil(totalCount / perPage) || 1
 
   return (
     <div className="flex items-center justify-between">
@@ -28,7 +30,7 @@ export function Pagination({
 
       <div className="flex items-center gap-6 lg:gap-8">
         <div className="text-sm font-medium">
-          Página {pageIndex + 1} de {pages}
+          Página {pageIndex + 1} de {totalPages}
         </div>
 
         <div className="flex items-center gap-2">
@@ -36,6 +38,8 @@ export function Pagination({
             variant="outline"
             className="size-8 p-0"
             aria-label="Primeira página"
+            onClick={() => onPageChange(0)}
+            disabled={pageIndex === 0}
           >
             <ChevronsLeftIcon className="size-4" />
           </Button>
@@ -43,6 +47,8 @@ export function Pagination({
             variant="outline"
             className="size-8 p-0"
             aria-label="Página anterior"
+            onClick={() => onPageChange(pageIndex - 1)}
+            disabled={pageIndex === 0}
           >
             <ChevronLeftIcon className="size-4" />
           </Button>
@@ -50,6 +56,8 @@ export function Pagination({
             variant="outline"
             className="size-8 p-0"
             aria-label="Próxima página"
+            onClick={() => onPageChange(pageIndex + 1)}
+            disabled={totalPages <= pageIndex + 1}
           >
             <ChevronRightIcon className="size-4" />
           </Button>
@@ -57,6 +65,8 @@ export function Pagination({
             variant="outline"
             className="size-8 p-0"
             aria-label="Última página"
+            onClick={() => onPageChange(totalPages - 1)}
+            disabled={totalPages <= pageIndex + 1}
           >
             <ChevronsRightIcon className="size-4" />
           </Button>
