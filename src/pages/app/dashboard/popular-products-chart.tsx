@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { BarChartIcon } from "lucide-react"
+import { BarChartIcon, Loader2Icon } from "lucide-react"
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts"
 import colors from "tailwindcss/colors"
 
@@ -32,7 +32,7 @@ export function PopularProductsChart() {
       </CardHeader>
 
       <CardContent>
-        {popularProducts && (
+        {popularProducts ? (
           <ResponsiveContainer
             width="100%"
             height={240}
@@ -90,6 +90,10 @@ export function PopularProductsChart() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2Icon className="size-8 animate-spin text-muted-foreground" />
+          </div>
         )}
       </CardContent>
     </Card>
