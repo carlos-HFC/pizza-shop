@@ -63,7 +63,7 @@ export function Orders() {
                 <TableRow>
                   <TableHead className="w-16" />
                   <TableHead className="w-36">Identificador</TableHead>
-                  <TableHead className="w-36">Realizado há</TableHead>
+                  <TableHead className="w-44">Realizado há</TableHead>
                   <TableHead className="w-44">Status</TableHead>
                   <TableHead>Cliente</TableHead>
                   <TableHead className="w-36">Total do pedido</TableHead>

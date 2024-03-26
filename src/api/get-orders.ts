@@ -7,7 +7,7 @@ export interface GetOrdersRequest {
   pageIndex?: number | null
 }
 
-interface GetOrdersResponse {
+export interface GetOrdersResponse {
   orders: {
     orderId: string
     createdAt: string

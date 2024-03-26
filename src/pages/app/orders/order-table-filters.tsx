@@ -76,7 +76,11 @@ export function OrderTableFilters() {
       return prev
     })
 
-    reset()
+    reset({
+      customerName: "",
+      orderId: "",
+      status: "all",
+    })
   }
 
   return (
