@@ -1,6 +1,5 @@
-<p align="center" style="font-size:80px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:bold">
-  <img src="./public/favicon.png" width="150" /> 
-  Pizza Shop
+<p align="center">
+  <img src="./public/favicon.png" width="250" /> 
 </p>
 
 <br/>
