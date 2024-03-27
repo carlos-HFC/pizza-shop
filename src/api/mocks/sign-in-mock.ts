@@ -11,7 +11,7 @@ export const signInMock = http.post<never, SignInRequest>(
       return new HttpResponse(null, {
         status: 200,
         headers: {
-          "Set-Cookie": "auth-sample-jwt",
+          "Set-Cookie": "auth=sample-jwt",
         },
       })
     }
