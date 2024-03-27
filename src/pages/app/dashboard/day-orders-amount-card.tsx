@@ -35,7 +35,7 @@ export function DayOrdersAmountCard() {
                   {dayOrdersAmount.diffFromYesterday}%{" "}
                 </span>
               )}
-              em relação ao mês passado
+              em relação a ontem
             </p>
           </>
         ) : (
